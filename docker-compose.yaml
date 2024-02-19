@@ -56,6 +56,18 @@ services:
     volumes:
       - noname_project:/usr/share/elasticsearch/data
 
+  neo4j:
+    image: neo4j:4.0.3
+    hostname: neo4j
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - noname_project:/plugins
+    environment:
+      NEO4J_AUTH: ${NEO4J_USER}/${NEO4J_PASSWORD}
+
   app:
     build: .
     container_name: app
@@ -64,7 +76,9 @@ services:
     ports:
       - ${LOCAL_SERVICES_PORT}:4040
     depends_on:
-      r_db:
+      redis:
+        condition: service_healthy
+      postgre:
         condition: service_healthy
 
 volumes:

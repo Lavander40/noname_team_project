@@ -10,6 +10,6 @@ COPY . ./
 
 RUN go build -o ./bin/noname.exe -v ./main.go
 
-EXPOSE 4041
+EXPOSE 4040
 
 CMD [ "./bin/noname.exe" ]

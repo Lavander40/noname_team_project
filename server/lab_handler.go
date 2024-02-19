@@ -7,8 +7,8 @@ import (
 )
 
 type EsRequest struct {
-	phrase string
-	date   time.Time
+	Phrase string
+	Date   time.Time
 }
 
 func (s *Server) handleLab1() http.HandlerFunc {
@@ -21,13 +21,13 @@ func (s *Server) handleLab1() http.HandlerFunc {
 			return
 		}
 
-		lectureList, err := s.storage.Elastic.GetByPhrase(esReq.phrase)
+		lectureList, err := s.storage.Elastic.GetByPhrase(esReq.Phrase)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		studentArray, lessonsArray := s.storage.Neo4j.GetVisited(lectureList)
+		studentArray, lessonsArray, err := s.storage.Neo4j.GetVisited(lectureList)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

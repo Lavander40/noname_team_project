@@ -51,6 +51,6 @@ func (s *Server) configureRouter() {
 
 func (s *Server) handleIndex() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "redis api server response")
+		io.WriteString(w, "server response")
 	}
 }

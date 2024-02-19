@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"noname_team_project/config"
-
 	rd "github.com/redis/go-redis/v9"
 )
 
@@ -23,7 +22,7 @@ func New(config *config.Config) *Redis {
 
 func (r *Redis) Open() error {
 	conn := rd.NewClient(&rd.Options{
-		Addr:     r.conf.REDIS_ADDR,
+		Addr:     "localhost:6379",
 		Password: r.conf.REDIS_PASSWORD,
 		DB:       r.conf.REDIS_BD,
 	})

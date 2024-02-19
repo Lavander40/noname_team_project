@@ -9,13 +9,7 @@ import (
 	"noname_team_project/storage/redis"
 )
 
-type storage interface {
-	Open() error
-	Close()
-}
-
 type Storage struct {
-	config  *config.Config
 	Redis   *redis.Redis
 	Postgre *postgre.Postgre
 	Elastic *elastic.Elastic
@@ -25,7 +19,6 @@ type Storage struct {
 
 func New(config *config.Config) *Storage {
 	return &Storage{
-		config:  config,
 		Redis:   redis.New(config),
 		Elastic: elastic.New(config),
 		Postgre: postgre.New(config),
@@ -33,10 +26,15 @@ func New(config *config.Config) *Storage {
 }
 
 func (s *Storage) Open() error {
-	s.Redis.Open()
-	s.Postgre.Open()
+	if err := s.Redis.Open(); err != nil {
+		return err
+	}
+	if err := s.Postgre.Open(); err != nil {
+		return err
+	}
 	s.Elastic.Open()
 	s.Neo4j.Open()
 	s.Mongo.Open()
+
 	return nil
 }

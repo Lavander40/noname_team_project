@@ -29,17 +29,17 @@ func (e *Elastic) GetByPhrase(phrase string) ([]int, error) {
 		e.conn.Search.WithPretty(),
 	)
 	if err != nil {
-		return lectureIds, err
+		return nil, err
 	}
 
 	if err = json.Unmarshal([]byte(res.String()), &lectures); err != nil {
-		return lectureIds, err
+		return nil, err
 	}
 
 	for _, v := range lectures.Hits.Hits {
 		id, err := strconv.Atoi(v.ID)
 		if err != nil{
-			return lectureIds, err
+			return nil, err
 		}
 
 		lectureIds = append(lectureIds, id)
