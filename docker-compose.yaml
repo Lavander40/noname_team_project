@@ -40,8 +40,8 @@ services:
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
        - noname_project:/var/lib/postgresql/data
-       - ./sql/pg_up_001.sql:/docker-entrypoint-initdb.d/pg_up_001.sql
-       - ./sql/pg_up_002.sql:/docker-entrypoint-initdb.d/pg_up_002.sql
+       - ./query/sql/pg_up_001.sql:/docker-entrypoint-initdb.d/pg_up_001.sql
+       - ./query/sql/pg_up_002.sql:/docker-entrypoint-initdb.d/pg_up_002.sql
 
   elastic:
     image: elasticsearch:8.10.2
@@ -67,6 +67,7 @@ services:
       - noname_project:/plugins
     environment:
       NEO4J_AUTH: ${NEO4J_USER}/${NEO4J_PASSWORD}
+    command: "docker exec -i neo4j bin/neo4j-shell < ./query/cql/setup.cql"
 
   app:
     build: .
