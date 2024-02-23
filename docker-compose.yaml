@@ -60,6 +60,7 @@ services:
       - ./query/cql/setup.cql:/var/lib/neo4j/import/setup.cql
     environment:
       NEO4J_AUTH: ${NEO4J_USER}/${NEO4J_PASSWORD}
+    command: "neo4j bin/cypher-shell -u ${NEO4J_USER} -p ${NEO4J_PASSWORD} -f ./var/lib/neo4j/import/setup.cql"
     networks:
       - net
 
