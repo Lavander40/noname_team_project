@@ -7,25 +7,29 @@ type Config struct {
 	POSTGRES_PASSWORD string `mapstructure:"POSTGRES_PASSWORD"`
 	POSTGRES_DB       string `mapstructure:"POSTGRES_DB"`
 
-	REDIS_PASSWORD string `mapstructure:"REDIS_PASSWORD"`
-	REDIS_BD       int    `mapstructure:"REDIS_DB"`
-
 	NEO4J_USER     string `mapstructure:"NEO4J_USER"`
 	NEO4J_PASSWORD string `mapstructure:"NEO4J_PASSWORD"`
 }
 
-func InitConfig() (config *Config, err error) {
-	// viper.SetConfigFile("../.env")
-	viper.AddConfigPath("..")
-	viper.SetConfigType("env")
+func InitConfig() (*Config, error) {
+	var config Config
+
+	viper.SetConfigFile(".env")
+	viper.SetConfigName("")
+	viper.AddConfigPath(".")
+	// viper.SetConfigType("env")
 
 	viper.AutomaticEnv()
 
-	err = viper.ReadInConfig()
+	err := viper.ReadInConfig()
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	err = viper.Unmarshal(config)
-	return
+	err = viper.Unmarshal(&config)
+	if err != nil {
+		return nil, err
+	}
+
+	return &config, nil
 }

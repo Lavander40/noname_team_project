@@ -1,24 +1,6 @@
 version: '3.8'
 
 services:
-
-  redis:
-    image: redis:latest
-    container_name: redis_db
-    env_file:
-      - .env
-    restart: always
-    ports:
-      - 6379:6379
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 1s
-      timeout: 3s
-      retries: 5
-      start_period: 10s
-    volumes:
-      - noname_project:/data
-
   postgre:
     image: postgres
     container_name: postgre_db
@@ -63,6 +45,12 @@ services:
     ports:
       - "7474:7474"
       - "7687:7687"
+    healthcheck:
+      test: wget http://localhost:7474 || exit 1
+      interval: 1s
+      timeout: 10s
+      retries: 20
+      start_period: 3s
     volumes:
       - noname_project:/plugins
     environment:
@@ -77,9 +65,9 @@ services:
     ports:
       - ${LOCAL_SERVICES_PORT}:4040
     depends_on:
-      redis:
-        condition: service_healthy
       postgre:
+        condition: service_healthy
+      neo4j:
         condition: service_healthy
 
 volumes:
