@@ -67,7 +67,7 @@ services:
       - noname_project:/plugins
     environment:
       NEO4J_AUTH: ${NEO4J_USER}/${NEO4J_PASSWORD}
-    command: "docker exec -i neo4j bin/neo4j-shell < ./query/cql/setup.cql"
+    command: "neo4j bin/neo4j-shell < ./query/cql/setup.cql"
 
   app:
     build: .
