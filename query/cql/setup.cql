@@ -1,30 +1,42 @@
 // Создание узлов для студентов
-CREATE (:Student {id_student: 1, full_name: 'Vladimir'})
-CREATE (:Student {id_student: 2, full_name: 'Vladislav'})
-CREATE (:Student {id_student: 3, full_name: 'Victor'})
-CREATE (:Student {id_student: 4, full_name: 'Vyacheslav'})
-CREATE (:Student {id_student: 5, full_name: 'Valeriy'})
-CREATE (:Student {id_student: 6, full_name: 'Viniamin'})
-CREATE (:Student {id_student: 7, full_name: 'Dmitriy'})
-CREATE (:Student {id_student: 8, full_name: 'Denis'})
-CREATE (:Student {id_student: 9, full_name: 'David'})
-CREATE (:Student {id_student: 10, full_name: 'Dementiy'})
-CREATE (:Student {id_student: 11, full_name: 'Sergey'})
-CREATE (:Student {id_student: 12, full_name: 'Nikolay'})
+CREATE (:Student {id_student: 1})
+CREATE (:Student {id_student: 2})
+CREATE (:Student {id_student: 3})
+CREATE (:Student {id_student: 4})
+CREATE (:Student {id_student: 5})
+CREATE (:Student {id_student: 6})
+CREATE (:Student {id_student: 7})
+CREATE (:Student {id_student: 8})
+CREATE (:Student {id_student: 9})
+CREATE (:Student {id_student: 10})
+CREATE (:Student {id_student: 11})
+CREATE (:Student {id_student: 12})
+CREATE (:Student {id_student: 13})
+CREATE (:Student {id_student: 14})
+CREATE (:Student {id_student: 15})
+CREATE (:Student {id_student: 16})
+CREATE (:Student {id_student: 17})
+CREATE (:Student {id_student: 18})
 
 // Создание узлов для групп
 CREATE (:Group {id_group: 1})
 CREATE (:Group {id_group: 2})
+CREATE (:Group {id_group: 3})
 
 // Создание узлов для занятий
-CREATE (:Lesson {id_lesson: 1, typing: 'лекция', date: datetime()})
-CREATE (:Lesson {id_lesson: 2, typing: 'лекция', date: datetime()})
-CREATE (:Lesson {id_lesson: 3, typing: 'лекция', date: datetime()})
+CREATE (:Lesson {id_lesson: 1})
+CREATE (:Lesson {id_lesson: 2})
+CREATE (:Lesson {id_lesson: 3})
 
 // Создание узлов для расписаний
 CREATE (:Schedule {id_schedule: 1})
 CREATE (:Schedule {id_schedule: 2})
 CREATE (:Schedule {id_schedule: 3})
+CREATE (:Schedule {id_schedule: 4})
+CREATE (:Schedule {id_schedule: 5})
+CREATE (:Schedule {id_schedule: 6})
+CREATE (:Schedule {id_schedule: 7})
+CREATE (:Schedule {id_schedule: 8})
 
 //Создание узлов для лекций
 CREATE (:Lecture {id_lecture: 1})
@@ -43,8 +55,13 @@ AND g.id_group = 1
 CREATE (s)-[:BELONGS_TO]->(g)
 
 MATCH (s:Student), (g:Group)
-WHERE s.id_student > 6
+WHERE s.id_student > 6 AND s.id_student <= 12
 AND g.id_group = 2
+CREATE (s)-[:BELONGS_TO]->(g)
+
+MATCH (s:Student), (g:Group)
+WHERE s.id_student > 12
+AND g.id_group = 3
 CREATE (s)-[:BELONGS_TO]->(g)
 
 MATCH (l:Lesson), (s:Schedule)

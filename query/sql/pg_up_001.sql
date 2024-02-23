@@ -63,11 +63,3 @@ CREATE TABLE attendances(
     FOREIGN KEY (stud_id) REFERENCES students(id),
     FOREIGN KEY (sched_id) REFERENCES schedules(id)
 );
-
-CREATE TABLE specialities_courses(
-    id SERIAL PRIMARY KEY,
-    spec_id INT NOT NULL,
-    course_id INT NOT NULL,
-    FOREIGN KEY (spec_id) REFERENCES specialities(id),
-    FOREIGN KEY (course_id) REFERENCES courses(id)
-);
