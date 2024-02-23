@@ -33,7 +33,7 @@ func (s *Server) handleLab1() http.HandlerFunc {
 			return
 		}
 
-		visitRate, err := s.storage.Postgre.GetVisitRate(studentArray, lessonsArray)
+		visitRate, err := s.storage.Postgre.GetVisitRate(studentArray, lessonsArray, esReq.Date)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
