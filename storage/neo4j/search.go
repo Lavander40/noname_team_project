@@ -1,6 +1,7 @@
 package neo4j
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
@@ -14,7 +15,9 @@ func (n *Neo4j) GetVisited(lectures []int) ([]int, []int, error) {
         itemsInterface = append(itemsInterface, item)
     }
 
-	result, _ := neo4j.ExecuteQuery(n.context, n.conn,
+	fmt.Println("interface pass")
+
+	result, err := neo4j.ExecuteQuery(n.context, n.conn,
 		`MATCH (l:Lesson)-[:BELONGS_TO]->(lec:Lecture)
 		WHERE lec.id_lecture IN $lectures
 		MATCH (s:Schedule)
@@ -27,6 +30,11 @@ func (n *Neo4j) GetVisited(lectures []int) ([]int, []int, error) {
             "lectures": itemsInterface,
         }, neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase("graph"))
+		if err != nil {
+			return nil, nil, err
+		}
+		
+		fmt.Println("search pass")
 
 		for _, record := range result.Records {
 			l, _ := record.Get("l")

@@ -19,7 +19,7 @@ func New(config *config.Config) *Elastic {
 func (e *Elastic) Open() error {
 	cfg := elasticsearch.Config{
 		Addresses: []string{
-		  "http://localhost:9200",
+		  "http://elastic:9200",
 		},
 	  }
 	  

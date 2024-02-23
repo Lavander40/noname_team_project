@@ -69,7 +69,7 @@ WHERE l.id_lesson = s.id_schedule
 CREATE (s)-[:INCLUDES]->(l)
 
 MATCH (lec:Lecture), (l:Lesson)
-WHERE lec.id_lecture = l.id_Lesson
+WHERE lec.id_lecture = l.id_lesson
 CREATE (lec)-[:INCLUDES]->(l)
 
 MATCH (s:Schedule), (g:Group)

@@ -2,6 +2,7 @@ package elastic
 
 import (
 	"encoding/json"
+	"io"
 	"strconv"
 	"strings"
 )
@@ -22,7 +23,7 @@ func (e *Elastic) GetByPhrase(phrase string) ([]int, error) {
 		e.conn.Search.WithBody(strings.NewReader(`{
 		  "query": {
 			"query_string": {
-				"query": "title:\"`+phrase+`\""
+				"query": "title:\"` + phrase + `\""
 			}
 		  }
 		}`)),
@@ -32,7 +33,12 @@ func (e *Elastic) GetByPhrase(phrase string) ([]int, error) {
 		return nil, err
 	}
 
-	if err = json.Unmarshal([]byte(res.String()), &lectures); err != nil {
+	temp, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if err = json.Unmarshal(temp, &lectures); err != nil {
 		return nil, err
 	}
 

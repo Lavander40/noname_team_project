@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -21,17 +22,23 @@ func (s *Server) handleLab1() http.HandlerFunc {
 			return
 		}
 
+		fmt.Println("json pass")
+
 		lectureList, err := s.storage.Elastic.GetByPhrase(esReq.Phrase)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
+		fmt.Println("elastic pass")
+
 		studentArray, lessonsArray, err := s.storage.Neo4j.GetVisited(lectureList)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+
+		fmt.Println("neo pass")
 
 		visitRate, err := s.storage.Postgre.GetVisitRate(studentArray, lessonsArray, esReq.Date)
 		if err != nil {

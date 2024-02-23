@@ -17,6 +17,7 @@ func New(config *config.Config) *Storage {
 	return &Storage{
 		Elastic: elastic.New(config),
 		Postgre: postgre.New(config),
+		Neo4j: neo4j.New(config),
 	}
 }
 

@@ -24,6 +24,8 @@ services:
        - noname_project:/var/lib/postgresql/data
        - ./query/sql/pg_up_001.sql:/docker-entrypoint-initdb.d/pg_up_001.sql
        - ./query/sql/pg_up_002.sql:/docker-entrypoint-initdb.d/pg_up_002.sql
+    networks:
+      - net
 
   elastic:
     image: elasticsearch:8.10.2
@@ -37,6 +39,8 @@ services:
       xpack.security.enabled: false
     volumes:
       - noname_project:/usr/share/elasticsearch/data
+    networks:
+      - net
 
   neo4j:
     image: neo4j:4.0.3
@@ -53,9 +57,11 @@ services:
       start_period: 3s
     volumes:
       - noname_project:/plugins
+      - ./query/cql/setup.cql:/var/lib/neo4j/import/setup.cql
     environment:
       NEO4J_AUTH: ${NEO4J_USER}/${NEO4J_PASSWORD}
-    command: "neo4j bin/neo4j-shell < ./query/cql/setup.cql"
+    networks:
+      - net
 
   app:
     build: .
@@ -69,7 +75,12 @@ services:
         condition: service_healthy
       neo4j:
         condition: service_healthy
+    networks:
+      - net
 
 volumes:
   noname_project:
     driver: local
+
+networks:
+  net:
