@@ -18,14 +18,18 @@ func (n *Neo4j) GetVisited(lectures []int) ([]int, []int, error) {
 	fmt.Println("interface pass")
 
 	result, err := neo4j.ExecuteQuery(n.context, n.conn,
-		`MATCH (l:Lesson)-[:BELONGS_TO]->(lec:Lecture)
-		WHERE lec.id_lecture IN $lectures
-		MATCH (s:Schedule)
-		WHERE s.id_lesson = l.id_lesson
-		WITH DISTINCT s.id_group AS id_group
-		MATCH (st:Student)
-		WHERE st.id_group = id_group
-		RETURN DISTINCT st.id_student AS s, l.id_lesson AS l`,
+		`MATCH (l:Lesson) 
+		WHERE l.id_lecture IN $lectures 
+		WITH l.id_lesson AS lessonId 
+		MATCH (s:Schedule) 
+		WHERE lessonId = s.id_lesson 
+		WITH lessonId, s.id_group AS groupsId
+		MATCH (g:Group) 
+		WHERE groupsId = g.id_group 
+		WITH lessonId, g.id_group AS newGroupsId
+		MATCH (s:Student)
+		WHERE s.group_id = newGroupsId
+		RETURN lessonId, s.id_student AS studentsID`,
 		map[string]interface{}{
             "lectures": itemsInterface,
         }, neo4j.EagerResultTransformer,

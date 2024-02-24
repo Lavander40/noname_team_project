@@ -20,7 +20,7 @@ func New(config *config.Config) *Neo4j {
 }
 
 func (n *Neo4j) Open() error {
-	driver, err := neo4j.NewDriverWithContext("bolt://neo4j:7687", neo4j.BasicAuth(n.conf.NEO4J_USER, n.conf.NEO4J_PASSWORD, ""))
+	driver, err := neo4j.NewDriverWithContext("neo4j://neo4j", neo4j.BasicAuth(n.conf.NEO4J_USER, n.conf.NEO4J_PASSWORD, ""))
 	if err != nil {
 		return err
 	}

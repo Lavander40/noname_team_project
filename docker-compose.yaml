@@ -44,11 +44,12 @@ services:
 
   neo4j:
     image: neo4j:4.0.3
-    hostname: neo4j
     container_name: neo4j
+    env_file:
+      - .env
     ports:
-      - "7474:7474"
-      - "7687:7687"
+      - 7474:7474
+      - 7687:7687
     healthcheck:
       test: wget http://localhost:7474 || exit 1
       interval: 1s
@@ -56,11 +57,10 @@ services:
       retries: 20
       start_period: 3s
     volumes:
-      - noname_project:/plugins
       - ./query/cql/setup.cql:/var/lib/neo4j/import/setup.cql
     environment:
       NEO4J_AUTH: ${NEO4J_USER}/${NEO4J_PASSWORD}
-    command: "neo4j bin/cypher-shell -u ${NEO4J_USER} -p ${NEO4J_PASSWORD} -f ./var/lib/neo4j/import/setup.cql"
+    command: "neo4j bin/cypher-shell -u ${NEO4J_USER} -p ${NEO4J_PASSWORD} -f var/lib/neo4j/import/setup.cql"
     networks:
       - net
 
@@ -85,3 +85,4 @@ volumes:
 
 networks:
   net:
+    driver: host

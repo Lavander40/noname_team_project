@@ -8,8 +8,8 @@ import (
 )
 
 type EsRequest struct {
-	Phrase string
-	Date   time.Time
+	Phrase string `json:"phrase"`
+	Date   time.Time `json:"date"`
 }
 
 func (s *Server) handleLab1() http.HandlerFunc {
