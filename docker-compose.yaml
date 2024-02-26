@@ -43,7 +43,7 @@ services:
       - net
 
   neo4j:
-    image: neo4j:4.0.3
+    image: neo4j
     container_name: neo4j
     env_file:
       - .env
@@ -85,4 +85,3 @@ volumes:
 
 networks:
   net:
-    driver: host
