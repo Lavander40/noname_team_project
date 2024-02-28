@@ -21,7 +21,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-       - noname_project:/var/lib/postgresql/data
        - ./query/sql/pg_up_001.sql:/docker-entrypoint-initdb.d/pg_up_001.sql
        - ./query/sql/pg_up_002.sql:/docker-entrypoint-initdb.d/pg_up_002.sql
     networks:
@@ -37,8 +36,6 @@ services:
     environment:
       discovery.type: single-node
       xpack.security.enabled: false
-    volumes:
-      - noname_project:/usr/share/elasticsearch/data
     networks:
       - net
 
@@ -78,10 +75,6 @@ services:
         condition: service_healthy
     networks:
       - net
-
-volumes:
-  noname_project:
-    driver: local
 
 networks:
   net:
