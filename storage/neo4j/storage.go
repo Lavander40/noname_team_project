@@ -30,6 +30,10 @@ func (n *Neo4j) Open() error {
 	}
 
 	n.conn = driver
+
+	if err := n.Init(); err != nil {
+		return err
+	}
 	return nil
 }
 

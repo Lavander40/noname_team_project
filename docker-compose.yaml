@@ -53,12 +53,9 @@ services:
       timeout: 10s
       retries: 5
       start_period: 3s
-    volumes:
-      - ./query/cql/setup.cql:/var/lib/neo4j/import/setup.cql
     environment:
       NEO4J_AUTH: ${NEO4J_USER}/${NEO4J_PASSWORD}
       NEO4J_server_config_strict__validation_enabled: false
-    command: "neo4j bin/cypher-shell -u ${NEO4J_USER} -p ${NEO4J_PASSWORD} -f var/lib/neo4j/import/setup.cql"
     networks:
       - net
 

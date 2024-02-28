@@ -1,6 +1,7 @@
 package postgre
 
 import (
+	"fmt"
 	"noname_team_project/model"
 	"time"
 
@@ -17,15 +18,17 @@ func (p *Postgre) GetVisitRate(studentArray, lessonsArray []int, date time.Time)
 	
 	rows, err := p.conn.Query("SELECT students.id, (SELECT count(id) FROM attendances WHERE stud_id = students.id AND sched_id IN (SELECT id FROM schedules WHERE lesson_id = ANY($1)))/(SELECT count(id) FROM lessons WHERE id = ANY($1))::float AS score FROM students WHERE id = ANY($2) ORDER BY score ASC LIMIT 10;", pq.Array(lessonsArray), pq.Array(studentArray))
 	if err != nil {
-		return rates, err
+		return nil, err
 	}
 	defer rows.Close()
 
+	fmt.Println(rows)
+
 	for rows.Next(){
-        rate := model.Rate{}
+        var rate model.Rate
         err := rows.Scan(&rate.Id, &rate.Score)
         if err != nil{
-            return rates, err
+            return nil, err
         }
         rates = append(rates, rate)
     }

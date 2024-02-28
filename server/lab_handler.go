@@ -39,12 +39,16 @@ func (s *Server) handleLab1() http.HandlerFunc {
 		}
 
 		fmt.Println("neo pass")
+		fmt.Println(studentArray)
+		fmt.Println(lessonsArray)
 
 		visitRate, err := s.storage.Postgre.GetVisitRate(studentArray, lessonsArray, esReq.Date)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+
+		fmt.Println(visitRate)
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(visitRate)

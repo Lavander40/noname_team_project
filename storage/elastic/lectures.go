@@ -15,6 +15,10 @@ type EsResponse struct{
 	} `json:"hits"`
 }
 
+func (e *Elastic) Init() error {
+	return nil
+}
+
 func (e *Elastic) GetByPhrase(phrase string) ([]int, error) {
 	var lectures EsResponse
 	var lectureIds []int

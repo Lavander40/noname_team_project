@@ -37,14 +37,14 @@ INSERT INTO students (full_name, group_id) VALUES ('Анастасия Олег�
 INSERT INTO students (full_name, group_id) VALUES ('Николай Дмитриевич Чугин', 3);
 INSERT INTO students (full_name, group_id) VALUES ('Антон Александрович Серов', 3);
 
-INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', 2023-10-21 09:00:00, 1, 3, 1);
-INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', 2023-10-21 10:40:00, 2, 3, 1);
-INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', 2023-10-23 14:20:00, 3, 3, 1);
-INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', 2023-10-23 16:20:00, 4, 3, 1);
-INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', 2023-10-25 12:40:00, 5, 3, 1);
-INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', 2023-10-26 10:40:00, 6, 3, 1);
-INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', 2023-10-26 12:40:00, 7, 3, 1);
-INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', 2023-10-26 14:20:00, 8, 3, 1);
+INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', '2023-10-21 09:00:00', 1, 3, 1);
+INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', '2023-10-21 10:40:00', 2, 3, 1);
+INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', '2023-10-23 14:20:00', 3, 3, 1);
+INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', '2023-10-23 16:20:00', 4, 3, 1);
+INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', '2023-10-25 12:40:00', 5, 3, 1);
+INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', '2023-10-26 10:40:00', 6, 3, 1);
+INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', '2023-10-26 12:40:00', 7, 3, 1);
+INSERT INTO lessons (typing, date, lection_id, equip_id, course_id) VALUES ('лекция', '2023-10-26 14:20:00', 8, 3, 1);
 
 INSERT INTO schedules (group_id, lesson_id, room_id) VALUES (1, 1, 1);
 INSERT INTO schedules (group_id, lesson_id, room_id) VALUES (1, 2, 1);
