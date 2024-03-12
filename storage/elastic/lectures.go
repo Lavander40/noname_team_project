@@ -1,14 +1,12 @@
 package elastic
 
 import (
+	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"noname_team_project/model"
 	"strconv"
 	"strings"
-
-	"github.com/elastic/go-elasticsearch/v8/esutil"
 )
 
 type EsResponse struct{
@@ -21,22 +19,19 @@ type EsResponse struct{
 
 func (e *Elastic) Init() error {
 	jlec, _ := json.Marshal(model.Lection{Title: "Основы квантовой механики"})
-	res, err := e.conn.Index("lectures", esutil.NewJSONReader(jlec), e.conn.Index.WithDocumentID("1"))
-	fmt.Print(res)
+	_, err := e.conn.Index("lectures", bytes.NewBuffer(jlec), e.conn.Index.WithDocumentID("1"))
 	if err != nil {
 		return err
 	}
 	
 	jlec, _ = json.Marshal(model.Lection{Title: "Основы проектирования распределённых систем"})
-	res, err = e.conn.Index("lectures", esutil.NewJSONReader(jlec), e.conn.Index.WithDocumentID("2"))
-	fmt.Print(res)
+	_, err = e.conn.Index("lectures", bytes.NewBuffer(jlec), e.conn.Index.WithDocumentID("2"))
 	if err != nil {
 		return err
 	}
 	
 	jlec, _ = json.Marshal(model.Lection{Title: "Эксплуатация распределённых систем"})
-	res, err = e.conn.Index("lectures", esutil.NewJSONReader(jlec), e.conn.Index.WithDocumentID("3"))
-	fmt.Print(res)
+	_, err = e.conn.Index("lectures", bytes.NewBuffer(jlec), e.conn.Index.WithDocumentID("3"))
 	if err != nil {
 		return err
 	}

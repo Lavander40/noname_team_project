@@ -2,6 +2,8 @@ package neo4j
 
 import (
 	"fmt"
+	"noname_team_project/model"
+
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
@@ -158,19 +160,42 @@ func (n *Neo4j) GetVisited(lectures []int) ([]int, []int, error) {
             "lectures": itemsInterface,
         }, neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase("neo4j"))
-		if err != nil {
-			return nil, nil, err
-		}
+	if err != nil {
+		return nil, nil, err
+	}
 		
-		fmt.Println("search pass")
+	fmt.Println("search pass")
 
-		for _, record := range result.Records {
-			l, _ := record.Get("lessonId")
-			lessons = append(lessons, int(l.(int64)))
+	for _, record := range result.Records {
+		l, _ := record.Get("lessonId")
+		lessons = append(lessons, int(l.(int64)))
 
-			s, _ := record.Get("studentsID")
-			students = append(students, int(s.(int64)))
-		}
+		s, _ := record.Get("studentsID")
+		students = append(students, int(s.(int64)))
+	}
 
 	return lessons, students, nil
+}
+ 
+func (n *Neo4j) StudentVisit(studentId int) (*model.StudVisit, error) {
+	stVisit := model.StudVisit{
+		StudId: studentId,
+	}
+
+	res, err := neo4j.ExecuteQuery(n.context, n.conn,
+		`MATCH (s: Student) WHERE s.id_student = $stud_id WITH s.group_id AS group MATCH (sch: Schedule) WHERE sch.id_group = group WITH sch.id_lesson AS lessons MATCH (l:Lesson) WHERE l.id_lesson = lessons RETURN l.id_lecture AS lectures`,
+		map[string]any{
+            "stud_id": studentId,
+        }, neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase("neo4j"))
+	if err != nil {
+		return nil, err
+	}
+
+	for _, record := range res.Records {
+		l, _ := record.Get("lectures")
+		stVisit.Lessons = append(stVisit.Lessons, int(l.(int64)))
+	}
+
+	return &stVisit, nil
 }

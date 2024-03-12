@@ -1,8 +1,8 @@
 package model
 
 type Rate struct {
-	Id int
-	Score float64
+	Student Student `json:"student"`
+	Score float64 `jsom:"score"`
 }
 
 type Student struct {
@@ -12,5 +12,10 @@ type Student struct {
 }
 
 type Lection struct {
-	Title string `json:"Title"`
+	Title string `json:"title"`
+}
+
+type StudVisit struct {
+	StudId int `json:"stud_id"`
+	Lessons []int `json:"lessons_ids"`
 }

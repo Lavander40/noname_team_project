@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"noname_team_project/model"
+	"noname_team_project/util"
+	"sort"
 	"time"
 )
 
@@ -32,25 +35,47 @@ func (s *Server) handleLab1() http.HandlerFunc {
 
 		fmt.Println("elastic pass")
 
-		studentArray, lessonsArray, err := s.storage.Neo4j.GetVisited(lectureList)
+		_, studentArray, err := s.storage.Neo4j.GetVisited(lectureList)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
+		studentArray = util.Unique(studentArray)
 		fmt.Println("neo pass")
 		fmt.Println(studentArray)
-		fmt.Println(lessonsArray)
+		var student_visit []model.StudVisit
 
-		visitRate, err := s.storage.Postgre.GetVisitRate(studentArray, lessonsArray, esReq.Date)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
+		for _, st := range studentArray {
+			stv, err := s.storage.Neo4j.StudentVisit(st)
+			if err != nil {
+				return
+			}
+			student_visit = append(student_visit, *stv)
+			fmt.Printf("%+v", *stv)
 		}
 
-		fmt.Println(visitRate)
+		fmt.Println("stv pass")
+		var result []model.Rate
+
+		for _, v := range student_visit {
+			visitRate, err := s.storage.Postgre.GetVisitRate(v, esReq.Date)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+			result = append(result, *visitRate)
+			fmt.Println(visitRate)
+		}
+
+		sort.Slice(result, func(i, j int) bool {
+			return result[i].Score < result[j].Score
+		})
+		if len(result) > 10 {
+			result = result[:10]
+		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(visitRate)
+		json.NewEncoder(w).Encode(result)
 	}
 }
