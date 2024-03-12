@@ -10,3 +10,7 @@ type Student struct {
 	Name    string `json:"name"`
 	GroupId string `json:"group"`
 }
+
+type Lection struct {
+	Title string `json:"Title"`
+}

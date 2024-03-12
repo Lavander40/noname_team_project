@@ -33,6 +33,11 @@ services:
       - .env
     ports:
       - 9200:9200
+    healthcheck:
+      test: curl -s http://localhost:9200 >/dev/null || exit 1
+      interval: 3s
+      timeout: 5s
+      retries: 5
     environment:
       discovery.type: single-node
       xpack.security.enabled: false
@@ -50,7 +55,7 @@ services:
     healthcheck:
       test: wget http://localhost:7474 || exit 1
       interval: 1s
-      timeout: 10s
+      timeout: 5s
       retries: 5
       start_period: 3s
     environment:
@@ -70,6 +75,8 @@ services:
       postgre:
         condition: service_healthy
       neo4j:
+        condition: service_healthy
+      elastic:
         condition: service_healthy
     networks:
       - net
